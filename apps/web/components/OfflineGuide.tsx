@@ -75,7 +75,7 @@ export function OfflineGuide() {
 
       {open ? (
         <div
-          className="drawer-backdrop fixed inset-0 z-50 grid items-end bg-ink/45 p-0 backdrop-blur-[2px] sm:place-items-center sm:p-5"
+          className="drawer-backdrop fixed inset-0 z-50 flex items-end justify-center overflow-hidden bg-ink/45 p-0 backdrop-blur-[2px] sm:items-center sm:p-6"
           role="presentation"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) {
@@ -89,7 +89,7 @@ export function OfflineGuide() {
           }}
         >
           <section
-            className="drawer-panel flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[1.75rem] bg-canvas sm:max-h-[88dvh] sm:max-w-lg sm:rounded-[1.5rem]"
+            className="drawer-panel flex h-[92dvh] max-h-[42rem] w-full flex-col overflow-hidden rounded-t-[1.75rem] bg-canvas sm:h-[min(42rem,calc(100dvh-3rem))] sm:max-w-xl sm:rounded-[1.5rem]"
             role="dialog"
             aria-modal="true"
             aria-labelledby="offline-guide-title"
@@ -97,7 +97,7 @@ export function OfflineGuide() {
           >
             <div className="mx-auto mt-2.5 h-1 w-10 shrink-0 rounded-full bg-zinc-300 sm:hidden" aria-hidden="true" />
 
-            <div className="overflow-y-auto px-4 pb-4 pt-3 sm:px-6 sm:pt-6">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4 pt-3 sm:px-6 sm:pt-6">
               <div className="flex items-start justify-between gap-5">
                 <div>
                   <p className="text-[0.6rem] font-bold uppercase tracking-[0.14em] text-accent">
@@ -129,17 +129,20 @@ export function OfflineGuide() {
                 Your history stays on this device too.
               </p>
 
-              <ol className="mt-4 divide-y divide-zinc-200 rounded-xl border border-zinc-300 bg-white px-3.5">
+              <ol className="mt-4 divide-y divide-zinc-200 rounded-xl border border-zinc-300 bg-white px-3.5 sm:grid sm:grid-cols-3 sm:gap-2 sm:divide-y-0 sm:border-0 sm:bg-transparent sm:px-0">
                 {[
                   ["01", "Load once", "Visit CalcTrick while connected."],
                   ["02", "Install", "Follow the instructions for your device."],
                   ["03", "Use offline", "Launch it from the new app icon."],
                 ].map(([number, title, detail]) => (
-                  <li key={number} className="grid grid-cols-[1.75rem_1fr] gap-3 py-3">
+                  <li
+                    key={number}
+                    className="grid grid-cols-[1.75rem_1fr] gap-3 py-3 sm:block sm:rounded-xl sm:border sm:border-zinc-300 sm:bg-white sm:p-3"
+                  >
                     <span className="grid size-7 place-items-center rounded-lg bg-accent/[0.09] font-mono text-[0.6rem] font-bold text-accent">
                       {number}
                     </span>
-                    <div>
+                    <div className="sm:mt-2">
                       <p className="text-xs font-bold text-ink">{title}</p>
                       <p className="mt-0.5 text-xs leading-4 text-zinc-500">{detail}</p>
                     </div>
