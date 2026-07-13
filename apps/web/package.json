@@ -1,0 +1,40 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "npm --prefix ../.. run build --workspace trick-engine",
+    "dev": "next dev --webpack",
+    "prebuild": "npm --prefix ../.. run build --workspace trick-engine",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "dexie": "4.4.4",
+    "next": "16.2.10",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "trick-engine": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.19.43",
+    "@ducanh2912/next-pwa": "10.2.9",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.1",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "autoprefixer": "10.5.2",
+    "eslint": "9.39.1",
+    "eslint-config-next": "16.2.10",
+    "fake-indexeddb": "6.2.5",
+    "jsdom": "29.1.1",
+    "postcss": "8.5.19",
+    "tailwindcss": "3.4.19",
+    "typescript": "5.9.3",
+    "vitest": "4.1.10"
+  }
+}
