@@ -102,11 +102,11 @@ export function scoreCalculation(calculation: Calculation): number {
     case "+":
       return scoreAddition(left, right);
     case "-":
-      return scoreAddition(left, -right) + (left < right ? 0.5 : 0);
+      return scoreAddition(left, -right) + (left < right ? 0.5 : 0) + (right < 0 ? 2 : 0);
     case "*":
-      return scoreMultiplication(left, right);
+      return scoreMultiplication(left, right) + (left < 0 || right < 0 ? 2 : 0);
     case "/":
-      return scoreDivision(left, right);
+      return scoreDivision(left, right) + (left < 0 || right < 0 ? 2 : 0);
   }
 }
 
