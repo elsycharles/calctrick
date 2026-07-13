@@ -123,7 +123,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
               </div>
             ))}
           </div>
-          <p className="mt-4 rounded-xl border-l-4 border-accent bg-white px-4 py-3 text-sm leading-6 text-zinc-600">
+          <p className="mt-4 rounded-xl bg-white px-4 py-3 text-sm leading-6 text-zinc-600">
             {guide.note}
           </p>
         </section>
