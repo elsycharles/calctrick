@@ -4,11 +4,14 @@ import { OfflineGuide } from "@/components/OfflineGuide";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(0.875rem,env(safe-area-inset-top))] sm:px-6 sm:pt-5">
-      <div className="mx-auto w-full max-w-4xl">
-        <nav className="mb-9 flex items-center justify-between gap-3 sm:mb-12" aria-label="Primary">
+    <main className="min-h-screen">
+      <div className="fixed inset-x-0 top-0 z-40 border-b border-zinc-200/90 bg-canvas/90 pt-[env(safe-area-inset-top)] backdrop-blur-md">
+        <nav
+          className="mx-auto flex h-16 w-full max-w-4xl items-center justify-between gap-3 px-4 sm:px-6"
+          aria-label="Primary"
+        >
           <div className="flex min-w-0 items-center gap-2.5">
-            <BrandMark />
+            <BrandMark size={34} />
             <div>
               <p className="text-base font-bold tracking-[-0.02em] text-ink">CalcTrick</p>
               <p className="hidden text-[0.6rem] font-semibold uppercase tracking-[0.14em] text-zinc-500 min-[390px]:block">
@@ -18,6 +21,9 @@ export default function HomePage() {
           </div>
           <OfflineGuide />
         </nav>
+      </div>
+
+      <div className="mx-auto w-full max-w-4xl px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[calc(5.5rem+env(safe-area-inset-top))] sm:px-6 sm:pt-[calc(6rem+env(safe-area-inset-top))]">
 
         <header className="mb-7 grid items-end gap-6 md:mb-9 md:grid-cols-[minmax(0,1fr)_16rem] md:gap-9">
           <div>
