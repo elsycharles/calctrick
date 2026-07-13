@@ -9,8 +9,8 @@ const config: Config = {
     extend: {
       colors: {
         accent: "#5B5BD6",
-        canvas: "#F6F6F3",
-        ink: "#18181B",
+        canvas: "#F3F3EF",
+        ink: "#151517",
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
