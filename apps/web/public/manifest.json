@@ -1,7 +1,7 @@
 {
   "name": "CalcTrick — Mental Math",
   "short_name": "CalcTrick",
-  "description": "Turn difficult calculations into simpler mental-math routes.",
+  "description": "Turn difficult calculations into simpler, ranked mental-math strategies with clear step-by-step explanations.",
   "id": "/",
   "start_url": "/",
   "scope": "/",

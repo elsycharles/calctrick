@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import type { TrickAnalysis } from "trick-engine";
 
 import {
+  createCalculatorSearch,
+  parseCalculatorSearch,
   type CalculatorDraft,
   type CalculatorValues,
   runCalculation,
@@ -34,6 +36,28 @@ export function CalculatorApp() {
 
   useEffect(() => {
     void refreshHistory();
+
+    const sharedValues = parseCalculatorSearch(window.location.search);
+    if (sharedValues !== null) {
+      let isCurrent = true;
+
+      queueMicrotask(() => {
+        if (!isCurrent) {
+          return;
+        }
+
+        setDraft({
+          a: String(sharedValues.a),
+          op: sharedValues.op,
+          b: String(sharedValues.b),
+        });
+        setAnalysis(runCalculation(sharedValues));
+      });
+
+      return () => {
+        isCurrent = false;
+      };
+    }
   }, []);
 
   async function refreshHistory() {
@@ -69,6 +93,11 @@ export function CalculatorApp() {
     try {
       setAnalysis(runCalculation(values));
       setError(null);
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${createCalculatorSearch(values)}`,
+      );
       void saveCalculation(values)
         .then(refreshHistory)
         .catch(() => undefined);
@@ -102,7 +131,12 @@ export function CalculatorApp() {
       ) : null}
 
       {analysis !== null ? (
-        <TrickList analysis={analysis} mode={mode} onModeChange={setMode} />
+        <TrickList
+          analysis={analysis}
+          mode={mode}
+          onModeChange={setMode}
+          shareExpression={analysis.expression}
+        />
       ) : (
         <section className="mt-6 rounded-2xl border border-dashed border-zinc-300 bg-white/45 px-4 py-6 text-center sm:py-7">
           <div className="mx-auto grid max-w-sm grid-cols-2 gap-3 text-left font-mono text-sm font-bold">
