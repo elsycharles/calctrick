@@ -66,4 +66,19 @@ describe("CalculatorApp", () => {
     );
     expect(screen.getAllByRole("list").length).toBeGreaterThan(1);
   });
+
+  it("loads and solves a calculation from a shareable URL", async () => {
+    window.history.replaceState(null, "", "/?a=38&op=add&b=27");
+
+    render(<CalculatorApp />);
+
+    expect(await screen.findByRole("spinbutton", { name: "First number" })).toHaveValue(38);
+    expect(screen.getByRole("spinbutton", { name: "Second number" })).toHaveValue(27);
+    expect(screen.getByRole("button", { name: "Select addition" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(await screen.findByRole("heading", { name: /easier routes?$/i })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Share calculation" })).toBeVisible();
+  });
 });
