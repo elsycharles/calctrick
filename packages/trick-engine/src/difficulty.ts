@@ -76,7 +76,11 @@ function scoreDivision(left: number, right: number): number {
     return 1.5 + numberComplexity(left) * 0.25;
   }
 
-  if (Number.isInteger(quotient) && Math.abs(quotient) <= 10) {
+  if (
+    Number.isInteger(quotient) &&
+    Math.abs(quotient) <= 10 &&
+    absoluteRight <= 12
+  ) {
     return 3.5 + numberComplexity(right) * 0.4;
   }
 
