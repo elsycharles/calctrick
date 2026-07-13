@@ -37,6 +37,8 @@ const DISPLAY_OPERATOR_FROM_URL: Readonly<Record<string, DisplayOperator>> = {
   sub: "−",
 };
 
+const LEGACY_SHARE_TEXT = " See simpler mental-math routes for ";
+
 export function runCalculation(values: CalculatorValues): TrickAnalysis {
   return generateTricks({
     left: values.a,
@@ -76,7 +78,7 @@ export function parseCalculatorSearch(search: string): CalculatorValues | null {
   }
 
   const a = Number(rawA);
-  const b = Number(rawB);
+  const b = Number(stripLegacyShareText(rawB));
   const op = DISPLAY_OPERATOR_FROM_URL[rawOperator];
 
   if (!Number.isFinite(a) || !Number.isFinite(b) || op === undefined) {
@@ -88,4 +90,9 @@ export function parseCalculatorSearch(search: string): CalculatorValues | null {
   }
 
   return { a, op, b };
+}
+
+function stripLegacyShareText(value: string): string {
+  const textStart = value.indexOf(LEGACY_SHARE_TEXT);
+  return textStart === -1 ? value : value.slice(0, textStart);
 }
