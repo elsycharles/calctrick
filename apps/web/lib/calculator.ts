@@ -23,6 +23,20 @@ const ENGINE_OPERATOR: Readonly<Record<DisplayOperator, ArithmeticOperator>> = {
   "−": "-",
 };
 
+const URL_OPERATOR: Readonly<Record<DisplayOperator, string>> = {
+  "×": "mul",
+  "÷": "div",
+  "+": "add",
+  "−": "sub",
+};
+
+const DISPLAY_OPERATOR_FROM_URL: Readonly<Record<string, DisplayOperator>> = {
+  mul: "×",
+  div: "÷",
+  add: "+",
+  sub: "−",
+};
+
 export function runCalculation(values: CalculatorValues): TrickAnalysis {
   return generateTricks({
     left: values.a,
@@ -33,4 +47,45 @@ export function runCalculation(values: CalculatorValues): TrickAnalysis {
 
 export function formatHistoryExpression(values: CalculatorValues): string {
   return `${values.a} ${values.op} ${values.b}`;
+}
+
+export function createCalculatorSearch(values: CalculatorValues): string {
+  const search = new URLSearchParams({
+    a: String(values.a),
+    op: URL_OPERATOR[values.op],
+    b: String(values.b),
+  });
+
+  return `?${search.toString()}`;
+}
+
+export function parseCalculatorSearch(search: string): CalculatorValues | null {
+  const params = new URLSearchParams(search);
+  const rawA = params.get("a");
+  const rawB = params.get("b");
+  const rawOperator = params.get("op");
+
+  if (
+    rawA === null ||
+    rawB === null ||
+    rawOperator === null ||
+    rawA.trim() === "" ||
+    rawB.trim() === ""
+  ) {
+    return null;
+  }
+
+  const a = Number(rawA);
+  const b = Number(rawB);
+  const op = DISPLAY_OPERATOR_FROM_URL[rawOperator];
+
+  if (!Number.isFinite(a) || !Number.isFinite(b) || op === undefined) {
+    return null;
+  }
+
+  if (op === "÷" && b === 0) {
+    return null;
+  }
+
+  return { a, op, b };
 }
