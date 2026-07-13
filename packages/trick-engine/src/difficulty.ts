@@ -53,6 +53,10 @@ function scoreMultiplication(left: number, right: number): number {
     return 1.2 + Math.max(numberComplexity(left), numberComplexity(right)) * 0.2;
   }
 
+  if (isRoundNumber(left) || isRoundNumber(right)) {
+    return 2.5 + Math.max(numberComplexity(left), numberComplexity(right)) * 0.4;
+  }
+
   if (isSmallInteger(left) || isSmallInteger(right)) {
     return 3.5 + Math.max(numberComplexity(left), numberComplexity(right)) * 0.55;
   }
@@ -61,7 +65,7 @@ function scoreMultiplication(left: number, right: number): number {
     return 6 + numberComplexity(left);
   }
 
-  return 8 + numberComplexity(left) + numberComplexity(right);
+  return 12 + numberComplexity(left) + numberComplexity(right);
 }
 
 function scoreDivision(left: number, right: number): number {
