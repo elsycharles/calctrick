@@ -1,5 +1,10 @@
 node_modules/
 dist/
+.next/
+apps/web/public/sw.js
+apps/web/public/workbox-*.js
+apps/web/public/worker-*.js
+apps/web/public/swe-worker-*.js
 coverage/
 *.tsbuildinfo
 .DS_Store
