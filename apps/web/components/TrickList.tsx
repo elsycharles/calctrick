@@ -12,7 +12,7 @@ interface TrickListProps {
 export function TrickList({ analysis, mode, onModeChange }: TrickListProps) {
   return (
     <section className="mt-8 sm:mt-9" aria-labelledby="results-heading" aria-live="polite">
-      <div className="mb-4 flex flex-col gap-3 min-[390px]:flex-row min-[390px]:items-end min-[390px]:justify-between">
+      <div className="mb-4 flex flex-col gap-2.5 min-[390px]:flex-row min-[390px]:items-end min-[390px]:justify-between">
         <div>
           <p className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-accent">Your routes</p>
           <h2 id="results-heading" className="mt-1 text-2xl font-bold tracking-[-0.035em] text-ink sm:text-3xl">
