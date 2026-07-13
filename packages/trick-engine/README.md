@@ -1,23 +1,23 @@
 # trick-engine
 
-Moteur TypeScript pur de CalcTrick. Il résout une opération binaire, génère plusieurs chemins de calcul mental mathématiquement équivalents, estime leur difficulté et les classe du plus simple au plus difficile.
+CalcTrick's pure TypeScript engine. It solves one binary operation, generates several mathematically equivalent mental-math routes, estimates their difficulty, and ranks them from easiest to hardest.
 
-Le package est privé, n’a aucune dépendance d’exécution et ne dépend ni de React ni de Next.js.
+The package is private, has no runtime dependencies, and does not depend on React or Next.js.
 
-## Périmètre actuel
+## Current scope
 
-- Addition, soustraction, multiplication et division.
-- Entiers, décimaux et nombres signés.
-- Saisie texte ou objet TypeScript.
-- Réponse directe, solution compacte et explication étape par étape.
-- Stratégies dédupliquées et triées par difficulté estimée.
-- Erreurs typées pour les entrées invalides et la division par zéro.
+- Addition, subtraction, multiplication, and division.
+- Integers, decimals, and signed numbers.
+- Text or typed object input.
+- Direct answer, compact solution, and step-by-step explanation.
+- Deduplicated strategies sorted by estimated difficulty.
+- Typed errors for invalid input and division by zero.
 
-Le moteur traite volontairement **une seule opération binaire au P0**. Une expression comme `2 + 3 * 4` est refusée plutôt qu’interprétée de façon ambiguë. L’UI, le mode entraînement et l’historique ne font pas partie de ce package.
+The P0 engine intentionally handles **one binary operation at a time**. An expression such as `2 + 3 * 4` is rejected instead of being interpreted ambiguously. The UI, training mode, and history are outside this package.
 
-## Commandes
+## Commands
 
-Depuis la racine du monorepo :
+From the monorepo root:
 
 ```bash
 npm install
@@ -26,7 +26,7 @@ npm run typecheck
 npm run build
 ```
 
-Ou seulement pour ce workspace :
+Or for this workspace only:
 
 ```bash
 npm test --workspace trick-engine
@@ -34,7 +34,7 @@ npm run typecheck --workspace trick-engine
 npm run build --workspace trick-engine
 ```
 
-## Utilisation
+## Usage
 
 ```ts
 import { explainTrick, generateTricks, solve } from "trick-engine";
@@ -49,25 +49,40 @@ const compact = explainTrick(analysis.tricks[0]!, "compact");
 // 6 × 100 = 600
 
 const detailed = explainTrick(analysis.tricks[0]!, "detailed");
-// Diviser par 4, multiplier par 4
+// Divide by 4, multiply by 4
 // ...
-// 1. 24 ÷ 4 = 6 — Divise un facteur.
-// 2. 25 × 4 = 100 — Multiplie l’autre par la même valeur.
+// 1. 24 ÷ 4 = 6 — Divide one factor.
+// 2. 25 × 4 = 100 — Multiply the other by the same value.
 // 3. 6 × 100 = 600 — ...
 
 solve({ left: 7.5, operator: "÷", right: 0.25 }); // 30
 ```
 
-Les symboles `*`, `x`, `X`, `×`, `/`, `÷`, `:`, `+` et `-` sont acceptés. Les chaînes acceptent le point ou la virgule décimale, par exemple `"12,5 - 2,5"`.
+The parser accepts `*`, `x`, `X`, `×`, `/`, `÷`, `:`, `+`, and `-`. Text input accepts either a decimal point or decimal comma, for example `"12,5 - 2,5"`.
 
-## Résultat de `generateTricks`
+## Inspecting the complete result in Node
+
+Node's default object display can collapse nested values into `[Object]` and `[Array]`. This is only a display shortcut; the data is still present. Use either of these forms to display everything:
+
+```js
+console.dir(generateTricks("38 + 27"), {
+  depth: null,
+  colors: true,
+});
+```
+
+```js
+console.log(JSON.stringify(generateTricks("38 + 27"), null, 2));
+```
+
+## `generateTricks` result
 
 ```ts
 interface TrickAnalysis {
   calculation: Calculation;
   expression: string;
   answer: number;
-  difficulty: Difficulty; // difficulté du calcul direct
+  difficulty: Difficulty; // difficulty of the direct calculation
   tricks: readonly Trick[];
   metadata: {
     generatedCandidates: number;
@@ -76,16 +91,16 @@ interface TrickAnalysis {
 }
 ```
 
-Chaque `Trick` contient :
+Each `Trick` contains:
 
-- `rule` : identifiant stable de la stratégie, utile pour les futures statistiques ;
-- `expression` : alternative courte à montrer immédiatement ;
-- `answer` : résultat final ;
-- `difficulty` et `improvement` : score du chemin et gain par rapport au calcul direct ;
-- `steps` : opérations atomiques, résultats intermédiaires et explications ;
-- `tags` : catégories exploitables par le futur mode entraînement.
+- `rule`: stable strategy identifier for future analytics;
+- `expression`: short alternative to display immediately;
+- `answer`: final result;
+- `difficulty` and `improvement`: route score and savings over direct calculation;
+- `steps`: atomic operations, intermediate results, and explanations;
+- `tags`: categories that can later support training mode.
 
-Options disponibles :
+Available options:
 
 ```ts
 generateTricks("24 * 25", {
@@ -95,53 +110,53 @@ generateTricks("24 * 25", {
 });
 ```
 
-Par défaut, seules les stratégies gagnant au moins un point sont renvoyées, avec un maximum de huit résultats. `includeNonImproving: true` est utile pour analyser ou tester l’ensemble des règles.
+By default, the engine returns at most eight strategies and keeps only those that save at least one point. `includeNonImproving: true` is useful when analyzing or testing every generated rule.
 
-## Stratégies implémentées
+## Implemented strategies
 
-| Opération | Familles de règles | Exemple |
+| Operation | Rule families | Example |
 | --- | --- | --- |
-| Addition | compensation, double proche, décomposition par valeur de position | `38 + 27 → 40 + 25` |
-| Soustraction | gestion du négatif, compensation, arrondi-correction, repère intermédiaire, décomposition | `83 − 29 → 53 + 1` |
-| Multiplication | gestion du signe, transfert de facteur, distributivité, différence de carrés | `24 × 25 → 6 × 100` |
-| Division | gestion du signe, facteur commun, changement d’échelle, facteurs successifs, quotients partiels | `7,5 ÷ 0,25 → 30 ÷ 1` |
+| Addition | compensation, near double, place-value decomposition | `38 + 27 → 40 + 25` |
+| Subtraction | negative handling, compensation, round-and-correct, bridge, decomposition | `83 − 29 → 53 + 1` |
+| Multiplication | sign handling, factor transfer, distributive property, difference of squares | `24 × 25 → 6 × 100` |
+| Division | sign handling, common factor, scaling, sequential factors, partial quotients | `7.5 ÷ 0.25 → 30 ÷ 1` |
 
-## Organisation du code
+## Code organization
 
 ```text
 src/
-├── engine.ts       # orchestration, validation, tri et explications
-├── difficulty.ts   # heuristique de coût mental
-├── math.ts         # calcul sûr, normalisation et formatage
-├── parser.ts       # lecture et normalisation des entrées
-├── types.ts        # contrat public et erreurs typées
+├── engine.ts       # orchestration, validation, ranking, and explanations
+├── difficulty.ts   # mental-effort heuristic
+├── math.ts         # safe calculation, normalization, and formatting
+├── parser.ts       # input parsing and normalization
+├── types.ts        # public contract and typed errors
 └── rules/
     ├── addition.ts
     ├── subtraction.ts
     ├── multiplication.ts
     ├── division.ts
-    ├── shared.ts   # constructeurs communs d’étapes
-    └── types.ts    # contrats internes des règles
+    ├── shared.ts   # shared step builders
+    └── types.ts    # internal rule contracts
 ```
 
-Le flux est le suivant :
+The processing flow is:
 
-1. `parser.ts` transforme l’entrée en `Calculation` canonique.
-2. `math.ts` calcule et normalise la réponse directe.
-3. Le fichier de règle correspondant produit des candidats et leurs étapes atomiques.
-4. `engine.ts` recalcule chaque étape, écarte toute route dont le dernier résultat n’est pas équivalent, puis déduplique les expressions.
-5. `difficulty.ts` additionne le coût mental des étapes et le moteur trie les stratégies.
+1. `parser.ts` converts the input into a canonical `Calculation`.
+2. `math.ts` calculates and normalizes the direct answer.
+3. The matching operation rule generates candidates and their atomic steps.
+4. `engine.ts` recalculates every step, rejects any route whose final result is not equivalent, and deduplicates expressions.
+5. `difficulty.ts` adds the mental cost of the steps, and the engine ranks the strategies.
 
-Le score de difficulté est une **heuristique**, pas une mesure scientifique. Les nombres ronds, petits facteurs, doubles et divisions exactes coûtent moins cher ; les opérations générales avec plusieurs chiffres coûtent davantage. La règle mathématique reste indépendante de ce score, ce qui permet d’ajuster le classement sans modifier les transformations.
+The difficulty score is a **heuristic**, not a scientific measurement. Round numbers, small factors, doubles, and exact divisions cost less; general multi-digit operations cost more. Mathematical transformations remain independent from the score, so ranking can be tuned without changing the rules.
 
-## Ajouter une règle
+## Adding a rule
 
-1. Ajouter un générateur dans le fichier de l’opération concernée.
-2. Construire chaque étape avec `makeStep` ou `makeAdjustment`.
-3. Donner à la règle un identifiant stable comme `multiplication.factor-transfer`.
-4. Terminer la liste d’étapes par une opération dont le résultat est la réponse finale : le moteur vérifie cet invariant.
-5. Ajouter un test d’exemple dans `tests/rules.test.ts` et, si nécessaire, une valeur à la matrice de `tests/invariants.test.ts`.
+1. Add a generator to the relevant operation file.
+2. Build each step with `makeStep` or `makeAdjustment`.
+3. Give the rule a stable identifier such as `multiplication.factor-transfer`.
+4. End the step list with an operation whose result is the final answer; the engine checks this invariant.
+5. Add an example to `tests/rules.test.ts` and, when useful, add a value to the matrix in `tests/invariants.test.ts`.
 
-## Précision numérique
+## Numeric precision
 
-Le package utilise les nombres JavaScript (`number`) et supprime le bruit flottant courant avec une normalisation à 15 chiffres significatifs : `0.1 + 0.2` renvoie donc `0.3`. Les opérandes et le résultat doivent rester finis. Pour de futurs calculs financiers exacts ou des nombres arbitrairement grands, il faudra introduire un type décimal dédié ; ce n’est pas le besoin du calcul mental P0.
+The package uses JavaScript numbers (`number`) and removes common floating-point noise by normalizing to 15 significant digits, so `0.1 + 0.2` returns `0.3`. Operands and results must remain finite. Exact financial arithmetic or arbitrarily large values would require a dedicated decimal type and are outside the mental-math P0 scope.
