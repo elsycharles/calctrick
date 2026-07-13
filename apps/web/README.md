@@ -51,8 +51,9 @@ After the custom domain is connected:
 1. Confirm `NEXT_PUBLIC_SITE_URL` uses that domain and redeploy.
 2. Inspect the page source and verify the canonical, Open Graph and Twitter metadata.
 3. Add the domain to Google Search Console.
-4. Use DNS verification, or add the provided token as `GOOGLE_SITE_VERIFICATION` in Vercel and redeploy for HTML-tag verification.
-5. Submit `https://your-domain.example/sitemap.xml` in Search Console.
-6. Test one shared calculator URL such as `/?a=24&op=mul&b=25` and its social preview.
+4. Verify the URL-prefix property with the HTML file at `/googlec2224002b644f670.html`. Keep this file in `public` after verification so Search Console can continue checking ownership.
+5. Alternatively, use DNS verification or add the provided token as `GOOGLE_SITE_VERIFICATION` in Vercel for HTML-tag verification.
+6. Submit `https://your-domain.example/sitemap.xml` in Search Console.
+7. Test one shared calculator URL such as `/?a=24&op=mul&b=25` and its social preview.
 
 The app does not require backend secrets, a database or API environment variables.
