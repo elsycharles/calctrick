@@ -1,18 +1,20 @@
 import type { TrickAnalysis } from "trick-engine";
 
 import { ModeToggle, type DisplayMode } from "./ModeToggle";
+import { ShareButton } from "./ShareButton";
 import { TrickCard } from "./TrickCard";
 
 interface TrickListProps {
   readonly analysis: TrickAnalysis;
   readonly mode: DisplayMode;
   readonly onModeChange: (mode: DisplayMode) => void;
+  readonly shareExpression: string;
 }
 
-export function TrickList({ analysis, mode, onModeChange }: TrickListProps) {
+export function TrickList({ analysis, mode, onModeChange, shareExpression }: TrickListProps) {
   return (
     <section className="mt-8 sm:mt-9" aria-labelledby="results-heading" aria-live="polite">
-      <div className="mb-4 flex flex-col gap-2.5 min-[390px]:flex-row min-[390px]:items-end min-[390px]:justify-between">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-accent">Your routes</p>
           <h2 id="results-heading" className="mt-1 text-2xl font-bold tracking-[-0.035em] text-ink sm:text-3xl">
@@ -21,9 +23,12 @@ export function TrickList({ analysis, mode, onModeChange }: TrickListProps) {
               : `${analysis.tricks.length} easier routes`}
           </h2>
         </div>
-        {analysis.tricks.length > 0 ? (
-          <ModeToggle mode={mode} onChange={onModeChange} />
-        ) : null}
+        <div className="flex items-center justify-between gap-2 sm:justify-end">
+          <ShareButton expression={shareExpression} />
+          {analysis.tricks.length > 0 ? (
+            <ModeToggle mode={mode} onChange={onModeChange} />
+          ) : null}
+        </div>
       </div>
 
       {analysis.tricks.length > 0 ? (
