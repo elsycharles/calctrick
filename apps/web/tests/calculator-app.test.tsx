@@ -27,7 +27,10 @@ describe("CalculatorApp", () => {
 
     expect(firstInput).toHaveValue(24);
     expect(screen.getByRole("spinbutton", { name: "Second number" })).toHaveValue(25);
-    expect(screen.getByRole("combobox", { name: "Operator" })).toHaveValue("×");
+    expect(screen.getByRole("button", { name: "Select multiplication" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
     expect(screen.queryByRole("heading", { name: /easier routes?$/i })).not.toBeInTheDocument();
   });
 
@@ -35,7 +38,7 @@ describe("CalculatorApp", () => {
     const user = userEvent.setup();
     render(<CalculatorApp />);
 
-    await user.selectOptions(screen.getByRole("combobox", { name: "Operator" }), "÷");
+    await user.click(screen.getByRole("button", { name: "Select division" }));
     const secondInput = screen.getByRole("spinbutton", { name: "Second number" });
     await user.clear(secondInput);
     await user.type(secondInput, "0");

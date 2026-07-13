@@ -3,7 +3,6 @@ import type { ChangeEvent, FormEvent } from "react";
 import {
   DISPLAY_OPERATORS,
   type CalculatorDraft,
-  type DisplayOperator,
 } from "@/lib/calculator";
 
 interface CalculatorFormProps {
@@ -24,17 +23,32 @@ export function CalculatorForm({ value, onChange, onSubmit }: CalculatorFormProp
 
   return (
     <form
-      className="rounded-2xl border border-zinc-300 bg-white p-4 sm:p-5"
+      className="overflow-hidden rounded-[2rem] bg-[#19191D] p-4 text-white sm:p-6 md:p-8"
       onSubmit={handleSubmit}
       aria-label="Mental math calculator"
     >
-      <div className="grid grid-cols-[minmax(0,1fr)_4.25rem_minmax(0,1fr)] gap-2.5 md:grid-cols-[minmax(0,1fr)_4.5rem_minmax(0,1fr)_9rem] md:gap-3">
-        <label className="min-w-0">
-          <span className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
-            First number
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#9B9BA4]">
+            New calculation
+          </p>
+          <h2 className="mt-1.5 text-xl font-bold tracking-tight sm:text-2xl">
+            What do you want to simplify?
+          </h2>
+        </div>
+        <span className="hidden rounded-full border border-white/10 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[#B7B7BF] min-[420px]:inline-flex">
+          Local engine
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+        <label className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.055] p-3 transition-colors focus-within:border-accent sm:p-4">
+          <span className="block text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#9B9BA4]">
+            Number A
           </span>
           <input
-            className="h-16 w-full min-w-0 rounded-xl border border-zinc-300 bg-canvas px-3 text-center font-mono text-xl font-bold text-ink transition-colors hover:border-zinc-400 focus:border-accent focus:bg-white focus:outline-none sm:text-2xl"
+            className="mt-2 h-12 w-full min-w-0 bg-transparent font-mono text-3xl font-bold tracking-[-0.04em] text-white caret-accent outline-none placeholder:text-[#686870] sm:h-14 sm:text-4xl"
+            aria-label="First number"
             type="number"
             inputMode="decimal"
             step="any"
@@ -44,32 +58,13 @@ export function CalculatorForm({ value, onChange, onSubmit }: CalculatorFormProp
           />
         </label>
 
-        <label>
-          <span className="mb-2 block text-center text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
-            Op.
-          </span>
-          <select
-            className="h-16 w-full rounded-xl border border-zinc-300 bg-canvas px-2 text-center font-mono text-xl font-bold text-ink transition-colors hover:border-zinc-400 focus:border-accent focus:bg-white focus:outline-none sm:text-2xl"
-            value={value.op}
-            onChange={(event) =>
-              onChange({ ...value, op: event.target.value as DisplayOperator })
-            }
-            aria-label="Operator"
-          >
-            {DISPLAY_OPERATORS.map((operator) => (
-              <option key={operator} value={operator}>
-                {operator}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="min-w-0">
-          <span className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
-            Second number
+        <label className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.055] p-3 transition-colors focus-within:border-accent sm:p-4">
+          <span className="block text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#9B9BA4]">
+            Number B
           </span>
           <input
-            className="h-16 w-full min-w-0 rounded-xl border border-zinc-300 bg-canvas px-3 text-center font-mono text-xl font-bold text-ink transition-colors hover:border-zinc-400 focus:border-accent focus:bg-white focus:outline-none sm:text-2xl"
+            className="mt-2 h-12 w-full min-w-0 bg-transparent font-mono text-3xl font-bold tracking-[-0.04em] text-white caret-accent outline-none placeholder:text-[#686870] sm:h-14 sm:text-4xl"
+            aria-label="Second number"
             type="number"
             inputMode="decimal"
             step="any"
@@ -78,14 +73,60 @@ export function CalculatorForm({ value, onChange, onSubmit }: CalculatorFormProp
             onChange={(event) => updateNumber("b", event)}
           />
         </label>
+      </div>
 
+      <fieldset className="mt-5">
+        <legend className="mb-2.5 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#9B9BA4]">
+          Choose an operation
+        </legend>
+        <div className="grid grid-cols-4 gap-2 rounded-2xl border border-white/10 bg-black/20 p-1.5 sm:gap-3">
+          {DISPLAY_OPERATORS.map((operator) => (
+            <button
+              key={operator}
+              className={`grid h-12 place-items-center rounded-xl font-mono text-2xl font-bold transition-[background-color,color,transform] active:scale-[0.97] sm:h-14 sm:text-3xl ${
+                value.op === operator
+                  ? "bg-accent text-white"
+                  : "text-[#B7B7BF] hover:bg-white/[0.07] hover:text-white"
+              }`}
+              type="button"
+              aria-label={`Select ${operatorName(operator)}`}
+              aria-pressed={value.op === operator}
+              onClick={() => onChange({ ...value, op: operator })}
+            >
+              {operator}
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
+      <div className="mt-5 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-xs leading-5 text-[#9B9BA4]">
+          Ranked strategies. No data leaves your device.
+        </p>
         <button
-          className="col-span-3 mt-1 h-14 rounded-xl bg-accent px-5 text-base font-bold text-white transition-opacity hover:opacity-90 active:opacity-80 md:col-span-1 md:mt-6 md:h-16"
+          className="group flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-accent px-7 text-sm font-bold text-white transition-[opacity,transform] hover:opacity-90 active:scale-[0.98] sm:w-auto sm:min-w-44"
           type="submit"
+          aria-label="Solve"
         >
-          Solve
+          Find easier routes
+          <span className="text-lg transition-transform group-hover:translate-x-0.5" aria-hidden="true">
+            →
+          </span>
         </button>
       </div>
     </form>
   );
+}
+
+function operatorName(operator: CalculatorDraft["op"]): string {
+  switch (operator) {
+    case "×":
+      return "multiplication";
+    case "÷":
+      return "division";
+    case "+":
+      return "addition";
+    case "−":
+      return "subtraction";
+  }
 }
