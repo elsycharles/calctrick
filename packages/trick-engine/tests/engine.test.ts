@@ -58,10 +58,11 @@ describe("explanations", () => {
     expect(trick).toBeDefined();
 
     const explanation = explainTrick(trick!);
-    expect(explanation).toContain("Diviser par 4, multiplier par 4");
+    expect(explanation).toContain("Divide by 4, multiply by 4");
     expect(explanation).toContain("1. 24 ÷ 4 = 6");
     expect(explanation).toContain("2. 25 × 4 = 100");
     expect(explanation).toContain("3. 6 × 100 = 600");
+    expect(explanation).toContain("Divide one factor.");
   });
 });
 

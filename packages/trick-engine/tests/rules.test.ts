@@ -30,7 +30,7 @@ describe("arithmetic rules", () => {
     );
 
     expect(expressions).toContain("40 + 25");
-    expect(expressions).toContain("38 + 20, puis 58 + 7");
+    expect(expressions).toContain("38 + 20, then 58 + 7");
   });
 
   it("offers round-and-correct subtraction", () => {
