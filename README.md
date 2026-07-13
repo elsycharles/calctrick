@@ -4,13 +4,14 @@ A mental math engine that turns any calculation into simpler alternative tricks,
 
 ## Current scope
 
-The repository currently contains only the private [`trick-engine`](packages/trick-engine) workspace. No web application has been created yet.
+The monorepo contains:
+
+- [`apps/web`](apps/web): the mobile-first Next.js PWA;
+- [`packages/trick-engine`](packages/trick-engine): the private mental-math engine.
 
 ```bash
 npm install
-npm test
-npm run typecheck
-npm run build
+npm run dev
 ```
 
-See the [engine documentation](packages/trick-engine/README.md) for its API, implemented rules and architecture.
+Open [http://localhost:3000](http://localhost:3000). See the [web app README](apps/web/README.md) for production PWA testing and the [engine documentation](packages/trick-engine/README.md) for its API and rules.
