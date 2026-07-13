@@ -94,7 +94,7 @@ export function CalculatorApp() {
 
       {error !== null ? (
         <p
-          className="mt-3 rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm font-semibold text-ink"
+          className="mt-3 rounded-2xl border border-accent bg-white px-4 py-3 text-sm font-semibold text-ink"
           role="alert"
         >
           {error}
@@ -104,9 +104,21 @@ export function CalculatorApp() {
       {analysis !== null ? (
         <TrickList analysis={analysis} mode={mode} onModeChange={setMode} />
       ) : (
-        <section className="mt-8 rounded-2xl border border-dashed border-zinc-300 px-5 py-8 text-center">
-          <p className="font-mono text-2xl font-bold text-zinc-400">24 × 25</p>
-          <p className="mt-2 text-sm text-zinc-500">Your easier routes will appear here.</p>
+        <section className="mt-8 rounded-[1.75rem] border border-dashed border-zinc-300 bg-white/45 px-5 py-8 text-center sm:py-10">
+          <div className="mx-auto flex max-w-sm items-center justify-center gap-2 font-mono text-sm font-bold sm:text-base">
+            <span className="rounded-xl border border-zinc-300 bg-white px-3 py-2 text-zinc-400 line-through">
+              24 × 25
+            </span>
+            <span className="grid size-8 place-items-center rounded-full bg-accent text-xs text-white" aria-hidden="true">
+              →
+            </span>
+            <span className="rounded-xl border border-zinc-300 bg-white px-3 py-2 text-ink">
+              6 × 100
+            </span>
+          </div>
+          <p className="mt-4 text-sm font-semibold text-zinc-500">
+            Your ranked routes will appear here.
+          </p>
         </section>
       )}
 
