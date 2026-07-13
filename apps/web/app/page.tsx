@@ -1,27 +1,39 @@
 import { CalculatorApp } from "@/components/CalculatorApp";
-import { BrandMark } from "@/components/BrandMark";
-import { OfflineGuide } from "@/components/OfflineGuide";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
+import { absoluteUrl, serializeJsonLd, SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
+import Link from "next/link";
+
+const applicationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: SITE_NAME,
+  url: absoluteUrl("/"),
+  description: SITE_DESCRIPTION,
+  applicationCategory: "EducationalApplication",
+  operatingSystem: "Any",
+  browserRequirements: "Requires JavaScript and a modern web browser",
+  featureList: [
+    "Ranked mental-math strategies",
+    "Step-by-step explanations",
+    "Calculation history stored on the device",
+    "Offline support after installation",
+  ],
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
 
 export default function HomePage() {
   return (
     <main className="min-h-screen">
-      <div className="fixed inset-x-0 top-0 z-40 border-b border-zinc-200/90 bg-canvas/90 pt-[env(safe-area-inset-top)] backdrop-blur-md">
-        <nav
-          className="mx-auto flex h-16 w-full max-w-4xl items-center justify-between gap-3 px-4 sm:px-6"
-          aria-label="Primary"
-        >
-          <div className="flex min-w-0 items-center gap-2.5">
-            <BrandMark size={34} />
-            <div>
-              <p className="text-base font-bold tracking-[-0.02em] text-ink">CalcTrick</p>
-              <p className="hidden text-[0.6rem] font-semibold uppercase tracking-[0.14em] text-zinc-500 min-[390px]:block">
-                Mental math, simplified
-              </p>
-            </div>
-          </div>
-          <OfflineGuide />
-        </nav>
-      </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(applicationJsonLd) }}
+      />
+      <SiteHeader />
 
       <div className="mx-auto w-full max-w-4xl px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[calc(5.5rem+env(safe-area-inset-top))] sm:px-6 sm:pt-[calc(6rem+env(safe-area-inset-top))]">
 
@@ -62,10 +74,49 @@ export default function HomePage() {
 
         <CalculatorApp />
 
-        <footer className="mt-10 flex flex-col gap-1.5 border-t border-zinc-300 py-5 text-[0.7rem] leading-5 text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-          <span>CalcTrick</span>
-          <span>Your calculations stay on this device. Nothing is sent to a server.</span>
-        </footer>
+        <section className="mt-12 border-t border-zinc-300 pt-9" aria-labelledby="how-it-works">
+          <div className="max-w-2xl">
+            <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-accent">
+              How it works
+            </p>
+            <h2
+              id="how-it-works"
+              className="mt-2 text-2xl font-bold tracking-[-0.035em] text-ink sm:text-3xl"
+            >
+              A mental math calculator that explains the route.
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-zinc-600">
+              CalcTrick looks for equivalent calculations that demand less mental effort.
+              It ranks the useful routes, keeps the arithmetic on your device and lets you
+              reveal every step when you want to understand the method.
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            {[
+              ["1", "Enter a calculation", "Use addition, subtraction, multiplication or division."],
+              ["2", "Compare easier routes", "Start with the strategy that has the lowest mental effort."],
+              ["3", "Learn the pattern", "Open the details, then reuse the same idea with new numbers."],
+            ].map(([number, title, text]) => (
+              <div key={number} className="rounded-2xl border border-zinc-300 bg-white p-4 sm:p-5">
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-accent font-mono text-xs font-bold text-white">
+                  {number}
+                </span>
+                <h3 className="mt-4 text-sm font-bold text-ink">{title}</h3>
+                <p className="mt-1.5 text-xs leading-5 text-zinc-600">{text}</p>
+              </div>
+            ))}
+          </div>
+
+          <Link
+            href="/tricks"
+            className="mt-5 inline-flex min-h-11 items-center rounded-xl border border-zinc-300 bg-white px-4 text-xs font-bold text-ink transition-colors hover:border-accent"
+          >
+            Explore the mental math guides
+          </Link>
+        </section>
+
+        <SiteFooter />
       </div>
     </main>
   );

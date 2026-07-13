@@ -1,17 +1,54 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
-  applicationName: "CalcTrick",
-  title: "CalcTrick — Mental math, made easier",
-  description: "Turn difficult calculations into simpler mental-math routes.",
+  metadataBase: SITE_URL,
+  applicationName: SITE_NAME,
+  title: {
+    default: "CalcTrick — Mental math, made easier",
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
+  category: "education",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: SITE_NAME,
+    title: "CalcTrick — Mental math, made easier",
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CalcTrick — Mental math, made easier",
+    description: SITE_DESCRIPTION,
+  },
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "CalcTrick",
+    title: SITE_NAME,
   },
   formatDetection: {
     telephone: false,
