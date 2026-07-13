@@ -12,9 +12,12 @@ describe("OfflineGuide", () => {
     await user.click(screen.getByRole("button", { name: "Works offline" }));
 
     expect(screen.getByRole("dialog", { name: "Keep CalcTrick ready anywhere" })).toBeVisible();
-    expect(screen.getByText("iPhone or iPad")).toBeVisible();
-    expect(screen.getByText("Android")).toBeVisible();
-    expect(screen.getByText("Computer")).toBeVisible();
+    expect(screen.getByRole("button", { name: "iPhone" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Android" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Computer" })).toBeVisible();
+
+    await user.click(screen.getByRole("button", { name: "Android" }));
+    expect(screen.getByText("On Android")).toBeVisible();
 
     await user.click(screen.getByRole("button", { name: "Close offline guide" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
