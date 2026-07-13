@@ -1,13 +1,9 @@
-import withPWAInit from "@ducanh2912/next-pwa";
+import withSerwistInit from "@serwist/next";
 
-const withPWA = withPWAInit({
-  dest: "public",
+const withSerwist = withSerwistInit({
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
   disable: process.env.NODE_ENV === "development",
-  register: true,
-  skipWaiting: true,
-  cacheOnFrontEndNav: true,
-  dynamicStartUrl: true,
-  reloadOnOnline: true,
 });
 
 /** @type {import('next').NextConfig} */
@@ -16,4 +12,4 @@ const nextConfig = {
   transpilePackages: ["trick-engine"],
 };
 
-export default withPWA(nextConfig);
+export default withSerwist(nextConfig);
