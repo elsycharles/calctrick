@@ -18,14 +18,26 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "64x64", type: "image/x-icon" },
-      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+      {
+        url: "/calctrick-favicon-v3.ico",
+        sizes: "64x64",
+        type: "image/x-icon",
+      },
+      {
+        url: "/icons/calctrick-mark-v3-192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        url: "/icons/calctrick-mark-v3-512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
     ],
-    shortcut: ["/favicon.ico"],
+    shortcut: ["/calctrick-favicon-v3.ico"],
     apple: [
       {
-        url: "/icons/apple-touch-icon.png",
+        url: "/icons/calctrick-apple-v3-180.png",
         sizes: "180x180",
         type: "image/png",
       },
