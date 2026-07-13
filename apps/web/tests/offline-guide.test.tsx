@@ -7,11 +7,13 @@ import { OfflineGuide } from "@/components/OfflineGuide";
 describe("OfflineGuide", () => {
   it("opens installation instructions and closes them", async () => {
     const user = userEvent.setup();
-    render(<OfflineGuide />);
+    const { container } = render(<OfflineGuide />);
 
     await user.click(screen.getByRole("button", { name: "Works offline" }));
 
-    expect(screen.getByRole("dialog", { name: "Keep CalcTrick ready anywhere" })).toBeVisible();
+    const dialog = screen.getByRole("dialog", { name: "Keep CalcTrick ready anywhere" });
+    expect(dialog).toBeVisible();
+    expect(container).not.toContainElement(dialog);
     expect(screen.getByRole("button", { name: "iPhone" })).toBeVisible();
     expect(screen.getByRole("button", { name: "Android" })).toBeVisible();
     expect(screen.getByRole("button", { name: "Computer" })).toBeVisible();

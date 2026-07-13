@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 const INSTALL_OPTIONS = [
   {
@@ -73,8 +74,9 @@ export function OfflineGuide() {
         <span className="min-[370px]:hidden">Offline</span>
       </button>
 
-      {open ? (
-        <div
+      {open
+        ? createPortal(
+            <div
           className="drawer-backdrop fixed inset-0 z-50 flex items-end justify-center overflow-hidden bg-ink/45 p-0 backdrop-blur-[2px] sm:items-center sm:p-6"
           role="presentation"
           onMouseDown={(event) => {
@@ -87,8 +89,8 @@ export function OfflineGuide() {
               setOpen(false);
             }
           }}
-        >
-          <section
+            >
+              <section
             className="drawer-panel flex h-[92dvh] max-h-[42rem] w-full flex-col overflow-hidden rounded-t-[1.75rem] bg-canvas sm:h-[min(42rem,calc(100dvh-3rem))] sm:max-w-xl sm:rounded-[1.5rem]"
             role="dialog"
             aria-modal="true"
@@ -199,9 +201,11 @@ export function OfflineGuide() {
                 Got it
               </button>
             </div>
-          </section>
-        </div>
-      ) : null}
+              </section>
+            </div>,
+            document.body,
+          )
+        : null}
     </>
   );
 }
