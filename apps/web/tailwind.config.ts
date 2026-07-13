@@ -8,12 +8,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        accent: "#5B5BD6",
-        canvas: "#F3F3EF",
-        ink: "#151517",
+        accent: "#5753D9",
+        canvas: "#F5F5F2",
+        ink: "#1C1C1E",
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
         mono: ["SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
       },
     },
