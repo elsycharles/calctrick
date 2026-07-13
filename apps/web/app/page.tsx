@@ -1,66 +1,63 @@
 import { CalculatorApp } from "@/components/CalculatorApp";
+import { BrandMark } from "@/components/BrandMark";
+import { OfflineGuide } from "@/components/OfflineGuide";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen px-4 pb-[max(2rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 sm:pt-6">
-      <div className="mx-auto w-full max-w-5xl">
-        <nav className="mb-12 flex items-center justify-between gap-4 sm:mb-16" aria-label="Primary">
-          <div className="flex items-center gap-3">
-            <div
-              className="grid size-11 place-items-center rounded-2xl border border-zinc-300 bg-white font-mono text-sm font-black tracking-[-0.12em] text-accent"
-              aria-hidden="true"
-            >
-              C→
-            </div>
+    <main className="min-h-screen px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(0.875rem,env(safe-area-inset-top))] sm:px-6 sm:pt-5">
+      <div className="mx-auto w-full max-w-4xl">
+        <nav className="mb-9 flex items-center justify-between gap-3 sm:mb-12" aria-label="Primary">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <BrandMark />
             <div>
-              <p className="text-lg font-bold tracking-tight text-ink">CalcTrick</p>
-              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+              <p className="text-base font-bold tracking-[-0.02em] text-ink">CalcTrick</p>
+              <p className="hidden text-[0.6rem] font-semibold uppercase tracking-[0.14em] text-zinc-500 min-[390px]:block">
                 Mental math, simplified
               </p>
             </div>
           </div>
-
-          <div className="flex items-center gap-2 rounded-full border border-zinc-300 bg-white px-3 py-2 text-xs font-bold text-zinc-600">
-            <span className="size-2 rounded-full bg-accent" aria-hidden="true" />
-            <span className="hidden min-[390px]:inline">Works offline</span>
-            <span className="min-[390px]:hidden">Offline</span>
-          </div>
+          <OfflineGuide />
         </nav>
 
-        <header className="mb-9 grid items-end gap-7 md:mb-12 md:grid-cols-[minmax(0,1fr)_18rem] md:gap-12">
+        <header className="mb-7 grid items-end gap-6 md:mb-9 md:grid-cols-[minmax(0,1fr)_16rem] md:gap-9">
           <div>
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+            <p className="mb-2.5 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-accent">
               Mental math, reworked
             </p>
-            <h1 className="max-w-3xl text-balance text-[2.7rem] font-bold leading-[0.98] tracking-[-0.055em] text-ink sm:text-6xl md:text-7xl">
+            <h1 className="max-w-2xl text-balance text-[2.35rem] font-bold leading-[1.02] tracking-[-0.05em] text-ink sm:text-[3.25rem] md:text-[3.75rem]">
               Make the numbers work for you.
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg">
+            <p className="mt-3.5 max-w-xl text-sm leading-6 text-zinc-600 sm:text-base">
               Turn one difficult calculation into a set of smaller, clearer moves —
               ranked by mental effort.
             </p>
           </div>
 
-          <div className="rounded-[1.75rem] border border-zinc-300 bg-white p-5" aria-hidden="true">
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-400">
-              The CalcTrick way
+          <div className="rounded-2xl border border-zinc-300 bg-white p-4" aria-hidden="true">
+            <p className="text-[0.6rem] font-bold uppercase tracking-[0.14em] text-zinc-400">
+              A simpler route
             </p>
-            <div className="mt-4 flex items-center gap-3 font-mono text-lg font-bold">
-              <span className="text-zinc-400 line-through decoration-2">24 × 25</span>
-              <span className="grid size-8 place-items-center rounded-full bg-accent text-sm text-white">→</span>
-              <span className="text-ink">6 × 100</span>
+            <div className="mt-3 grid grid-cols-2 gap-4 font-mono">
+              <div>
+                <p className="font-sans text-[0.6rem] font-semibold uppercase tracking-[0.12em] text-zinc-400">Original</p>
+                <p className="mt-1.5 text-sm font-bold text-zinc-400 line-through decoration-2">24 × 25</p>
+              </div>
+              <div className="border-l border-zinc-200 pl-4">
+                <p className="font-sans text-[0.6rem] font-semibold uppercase tracking-[0.12em] text-accent">Simpler</p>
+                <p className="mt-1.5 text-sm font-bold text-ink">6 × 100</p>
+              </div>
             </div>
-            <div className="mt-4 flex items-end justify-between border-t border-zinc-200 pt-4">
-              <span className="text-xs font-semibold text-zinc-500">Same answer</span>
-              <span className="font-mono text-3xl font-bold tracking-tight text-accent">600</span>
+            <div className="mt-3.5 flex items-end justify-between border-t border-zinc-200 pt-3.5">
+              <span className="text-[0.7rem] font-semibold text-zinc-500">Same answer</span>
+              <span className="font-mono text-2xl font-bold tracking-[-0.04em] text-accent">600</span>
             </div>
           </div>
         </header>
 
         <CalculatorApp />
 
-        <footer className="mt-14 flex flex-col gap-2 border-t border-zinc-300 py-6 text-xs leading-5 text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-          <span>CalcTrick P0</span>
+        <footer className="mt-10 flex flex-col gap-1.5 border-t border-zinc-300 py-5 text-[0.7rem] leading-5 text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
+          <span>CalcTrick</span>
           <span>Your calculations stay on this device. Nothing is sent to a server.</span>
         </footer>
       </div>
