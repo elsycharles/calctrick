@@ -21,7 +21,7 @@ describe("OfflineGuide", () => {
     await user.click(screen.getByRole("button", { name: "Android" }));
     expect(screen.getByText("On Android")).toBeVisible();
 
-    await user.click(screen.getByRole("button", { name: "Close offline guide" }));
+    await user.click(screen.getByRole("button", { name: "Got it" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });

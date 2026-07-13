@@ -29,7 +29,7 @@ type PlatformId = (typeof INSTALL_OPTIONS)[number]["id"];
 export function OfflineGuide() {
   const [open, setOpen] = useState(false);
   const [platform, setPlatform] = useState<PlatformId>("ios");
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!open) {
@@ -38,7 +38,7 @@ export function OfflineGuide() {
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    closeButtonRef.current?.focus();
+    dialogRef.current?.focus();
 
     return () => {
       document.body.style.overflow = previousOverflow;
@@ -91,8 +91,10 @@ export function OfflineGuide() {
           }}
             >
               <section
-            className="drawer-panel flex h-[92dvh] max-h-[42rem] w-full flex-col overflow-hidden rounded-t-[1.75rem] bg-canvas sm:h-[min(42rem,calc(100dvh-3rem))] sm:max-w-xl sm:rounded-[1.5rem]"
+            ref={dialogRef}
+            className="drawer-panel flex h-[92dvh] max-h-[42rem] w-full flex-col overflow-hidden rounded-t-[1.75rem] bg-canvas outline-none sm:h-[min(42rem,calc(100dvh-3rem))] sm:max-w-xl sm:rounded-[1.5rem]"
             role="dialog"
+            tabIndex={-1}
             aria-modal="true"
             aria-labelledby="offline-guide-title"
             aria-describedby="offline-guide-description"
@@ -113,8 +115,7 @@ export function OfflineGuide() {
                   </h2>
                 </div>
                 <button
-                  ref={closeButtonRef}
-                  className="grid size-9 shrink-0 place-items-center rounded-full border border-zinc-300 bg-white text-lg text-zinc-600 hover:text-ink"
+                  className="hidden size-9 shrink-0 place-items-center rounded-full border border-zinc-300 bg-white text-lg text-zinc-600 hover:text-ink sm:grid"
                   type="button"
                   aria-label="Close offline guide"
                   onClick={() => setOpen(false)}
