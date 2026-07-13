@@ -1,4 +1,4 @@
-import { isPowerOfTen, normalizeNumber } from "./math.js";
+import { isPowerOfTen, isRoundNumber, normalizeNumber } from "./math.js";
 import type { Calculation, Difficulty } from "./types.js";
 
 function numberComplexity(value: number): number {
@@ -34,7 +34,7 @@ function scoreAddition(left: number, right: number): number {
     return 1.5 + Math.max(numberComplexity(left), numberComplexity(right)) * 0.35;
   }
 
-  if (isPowerOfTen(Math.abs(left)) || isPowerOfTen(Math.abs(right))) {
+  if (isRoundNumber(left) || isRoundNumber(right)) {
     return 1.5 + Math.max(numberComplexity(left), numberComplexity(right)) * 0.45;
   }
 

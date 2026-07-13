@@ -86,6 +86,11 @@ export function isPowerOfTen(value: number): boolean {
   return nearlyEqual(exponent, Math.round(exponent));
 }
 
+export function isRoundNumber(value: number): boolean {
+  const absoluteValue = Math.abs(value);
+  return Number.isInteger(absoluteValue) && absoluteValue >= 10 && absoluteValue % 10 === 0;
+}
+
 export function smallDivisors(value: number, maximum = 100): readonly number[] {
   const absoluteValue = Math.abs(value);
   if (!Number.isSafeInteger(absoluteValue) || absoluteValue < 2) {
