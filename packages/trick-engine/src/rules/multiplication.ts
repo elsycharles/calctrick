@@ -20,16 +20,16 @@ function signCandidate(calculation: Calculation): readonly TrickCandidate[] {
   const unsignedProduct = normalizeNumber(absoluteLeft * absoluteRight);
   const isNegative = Math.sign(calculation.left) !== Math.sign(calculation.right);
   const steps = [
-    makeStep(absoluteLeft, "*", absoluteRight, "Multiplie d’abord les valeurs absolues."),
+    makeStep(absoluteLeft, "*", absoluteRight, "Multiply the absolute values first."),
   ];
   if (isNegative) {
-    steps.push(makeStep(0, "-", unsignedProduct, "Applique le signe négatif au produit."));
+    steps.push(makeStep(0, "-", unsignedProduct, "Apply the negative sign to the product."));
   }
 
   return [{
     rule: "multiplication.sign",
-    title: "Séparer le signe du calcul",
-    summary: "Détermine le signe, puis multiplie uniquement les valeurs absolues.",
+    title: "Handle the sign separately",
+    summary: "Determine the sign, then multiply only the absolute values.",
     expression: `${isNegative ? "−" : ""}${formatNumber(absoluteLeft)} × ${formatNumber(absoluteRight)}`,
     steps,
     tags: ["negative-number", "sign"],
@@ -57,19 +57,19 @@ function factorTransferCandidates(calculation: Calculation): readonly TrickCandi
 
       candidates.push({
         rule: "multiplication.factor-transfer",
-        title: `Diviser par ${factor}, multiplier par ${factor}`,
-        summary: `Transfère le facteur ${factor} d’un terme vers l’autre sans changer le produit.`,
+        title: `Divide by ${factor}, multiply by ${factor}`,
+        summary: `Transfer the factor ${factor} from one term to the other without changing the product.`,
         expression: `${formatNumber(reducedSource)} × ${formatNumber(expandedDestination)}`,
         steps: [
-          makeStep(source, "/", factor, "Divise un facteur."),
-          makeStep(destination, "*", factor, "Multiplie l’autre par la même valeur."),
+          makeStep(source, "/", factor, "Divide one factor."),
+          makeStep(destination, "*", factor, "Multiply the other by the same value."),
           makeStep(
             reducedSource,
             "*",
             expandedDestination,
             friendlyDestination
-              ? "Le second facteur est maintenant rond : termine le produit."
-              : "Termine avec les deux nouveaux facteurs.",
+              ? "The second factor is now round; finish the multiplication."
+              : "Finish with the two new factors.",
           ),
         ],
         tags: friendlyDestination
@@ -108,18 +108,18 @@ function distributiveCandidates(calculation: Calculation): readonly TrickCandida
 
       candidates.push({
         rule: "multiplication.distributive",
-        title: `Distribuer autour de ${formatNumber(target)}`,
-        summary: `Remplace ${formatNumber(rounded)} par ${formatAdjustment(target, remainder)} et distribue le produit.`,
+        title: `Distribute around ${formatNumber(target)}`,
+        summary: `Replace ${formatNumber(rounded)} with ${formatAdjustment(target, remainder)} and distribute the product.`,
         expression: formatAdjustment(mainProduct, correction),
         steps: [
-          makeStep(multiplier, "*", target, "Multiplie par la partie ronde."),
+          makeStep(multiplier, "*", target, "Multiply by the round part."),
           makeStep(
             multiplier,
             "*",
             Math.abs(remainder),
-            "Calcule le petit produit de correction.",
+            "Calculate the small correction product.",
           ),
-          makeAdjustment(mainProduct, correction, "Applique la correction au produit principal."),
+          makeAdjustment(mainProduct, correction, "Apply the correction to the main product."),
         ],
         tags: ["distributive", "round-number"],
         strategyPenalty: 0.75,
@@ -154,13 +154,13 @@ function differenceOfSquaresCandidate(
   const distanceSquare = normalizeNumber(distance * distance);
   return [{
     rule: "multiplication.difference-of-squares",
-    title: `Utiliser le carré de ${formatNumber(middle)}`,
-    summary: `Les facteurs sont à égale distance de ${formatNumber(middle)} : utilise a² − b².`,
+    title: `Use the square of ${formatNumber(middle)}`,
+    summary: `The factors are equally distant from ${formatNumber(middle)}, so use a² − b².`,
     expression: `${formatNumber(middleSquare)} − ${formatNumber(distanceSquare)}`,
     steps: [
-      makeStep(middle, "*", middle, "Calcule le carré du nombre central."),
-      makeStep(distance, "*", distance, "Calcule le carré de l’écart."),
-      makeStep(middleSquare, "-", distanceSquare, "Soustrais les deux carrés."),
+      makeStep(middle, "*", middle, "Calculate the square of the middle number."),
+      makeStep(distance, "*", distance, "Calculate the square of the distance."),
+      makeStep(middleSquare, "-", distanceSquare, "Subtract the two squares."),
     ],
     tags: ["difference-of-squares", "algebra"],
     strategyPenalty: 1,

@@ -14,7 +14,7 @@ import type { TrickCandidate, TrickRule } from "./types.js";
 
 function compensationCandidates(calculation: Calculation): readonly TrickCandidate[] {
   const pairs = [
-    { value: calculation.left, other: calculation.right, position: "premier" },
+    { value: calculation.left, other: calculation.right, position: "first" },
     { value: calculation.right, other: calculation.left, position: "second" },
   ] as const;
   const candidates: TrickCandidate[] = [];
@@ -30,13 +30,13 @@ function compensationCandidates(calculation: Calculation): readonly TrickCandida
       const adjustedOther = normalizeNumber(other - delta);
       candidates.push({
         rule: "addition.compensation",
-        title: `Compenser vers ${formatNumber(target)}`,
-        summary: `Ajuste le ${position} terme de ${formatNumber(delta)}, puis compense sur l’autre terme.`,
+        title: `Compensate to ${formatNumber(target)}`,
+        summary: `Adjust the ${position} term by ${formatNumber(delta)}, then compensate on the other term.`,
         expression: `${formatNumber(target)} + ${formatNumber(adjustedOther)}`,
         steps: [
-          makeAdjustment(value, delta, "Arrondis ce terme."),
-          makeAdjustment(other, -delta, "Compense avec le même écart."),
-          makeStep(target, "+", adjustedOther, "Additionne les deux nombres plus simples."),
+          makeAdjustment(value, delta, "Round this term."),
+          makeAdjustment(other, -delta, "Offset the same amount on the other term."),
+          makeStep(target, "+", adjustedOther, "Add the two simpler numbers."),
         ],
         tags: ["compensation", "round-number"],
         strategyPenalty: 0.5,
@@ -72,12 +72,12 @@ function nearDoubleCandidates(calculation: Calculation): readonly TrickCandidate
     const doubled = calculate({ left: anchor, operator: "*", right: 2 });
     candidates.push({
       rule: "addition.near-double",
-      title: `Utiliser le double de ${formatNumber(anchor)}`,
-      summary: `Double ${formatNumber(anchor)}, puis corrige de ${formatNumber(difference)}.`,
+      title: `Use double ${formatNumber(anchor)}`,
+      summary: `Double ${formatNumber(anchor)}, then adjust by ${formatNumber(difference)}.`,
       expression: formatAdjustment(doubled, difference),
       steps: [
-        makeStep(anchor, "*", 2, "Calcule le double le plus proche."),
-        makeAdjustment(doubled, difference, "Ajoute l’écart entre les deux termes."),
+        makeStep(anchor, "*", 2, "Calculate the nearest double."),
+        makeAdjustment(doubled, difference, "Add the difference between the two terms."),
       ],
       tags: ["near-double"],
       strategyPenalty: 0.75,
@@ -109,12 +109,12 @@ function placeValueCandidates(calculation: Calculation): readonly TrickCandidate
     const intermediate = normalizeNumber(base + highPart);
     candidates.push({
       rule: "addition.place-value",
-      title: `Décomposer ${formatNumber(split)}`,
-      summary: `Sépare ${formatNumber(split)} en ${formatNumber(highPart)} et ${formatNumber(remainder)}.`,
-      expression: `${formatAdjustment(base, highPart)}, puis ${formatAdjustment(intermediate, remainder)}`,
+      title: `Decompose ${formatNumber(split)}`,
+      summary: `Split ${formatNumber(split)} into ${formatNumber(highPart)} and ${formatNumber(remainder)}.`,
+      expression: `${formatAdjustment(base, highPart)}, then ${formatAdjustment(intermediate, remainder)}`,
       steps: [
-        makeAdjustment(base, highPart, "Ajoute d’abord la partie de plus grande valeur."),
-        makeAdjustment(intermediate, remainder, "Ajoute ensuite le reste."),
+        makeAdjustment(base, highPart, "Add the highest-place part first."),
+        makeAdjustment(intermediate, remainder, "Then add the remainder."),
       ],
       tags: ["decomposition", "place-value"],
       strategyPenalty: 0.5,

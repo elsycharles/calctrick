@@ -14,15 +14,15 @@ function subtractNegativeCandidate(calculation: Calculation): readonly TrickCand
 
   return [{
     rule: "subtraction.negative",
-    title: "Transformer les deux signes moins",
-    summary: "Soustraire un nombre négatif revient à additionner sa valeur positive.",
+    title: "Turn two minus signs into a plus",
+    summary: "Subtracting a negative number is the same as adding its positive value.",
     expression: `${formatNumber(calculation.left)} + ${formatNumber(Math.abs(calculation.right))}`,
     steps: [
       makeStep(
         calculation.left,
         "+",
         Math.abs(calculation.right),
-        "Remplace la soustraction du négatif par une addition.",
+        "Replace subtraction of a negative number with addition.",
       ),
     ],
     tags: ["negative-number", "sign"],
@@ -50,13 +50,13 @@ function roundedSubtrahendCandidates(
 
     candidates.push({
       rule: "subtraction.compensation",
-      title: `Compenser vers ${formatNumber(target)}`,
-      summary: `Ajoute ${formatNumber(correction)} aux deux termes pour arrondir le nombre soustrait.`,
+      title: `Compensate to ${formatNumber(target)}`,
+      summary: `Shift both terms by ${formatNumber(correction)} to round the subtrahend.`,
       expression: `${formatNumber(shiftedLeft)} − ${formatNumber(target)}`,
       steps: [
-        makeAdjustment(calculation.left, correction, "Décale le premier terme."),
-        makeAdjustment(calculation.right, correction, "Décale le second du même montant."),
-        makeStep(shiftedLeft, "-", target, "Soustrais maintenant le nombre rond."),
+        makeAdjustment(calculation.left, correction, "Shift the first term."),
+        makeAdjustment(calculation.right, correction, "Shift the second term by the same amount."),
+        makeStep(shiftedLeft, "-", target, "Now subtract the round number."),
       ],
       tags: ["compensation", "round-number"],
       strategyPenalty: 0.4,
@@ -64,17 +64,17 @@ function roundedSubtrahendCandidates(
 
     candidates.push({
       rule: "subtraction.round-and-correct",
-      title: `Soustraire ${formatNumber(target)}, puis corriger`,
-      summary: `Soustrais le nombre rond ${formatNumber(target)}, puis corrige de ${formatNumber(correction)}.`,
+      title: `Subtract ${formatNumber(target)}, then adjust`,
+      summary: `Subtract the round number ${formatNumber(target)}, then adjust by ${formatNumber(correction)}.`,
       expression: formatAdjustment(directIntermediate, correction),
       steps: [
         makeStep(
           calculation.left,
           "-",
           target,
-          "Soustrais d’abord le nombre rond le plus proche.",
+          "Subtract the nearest round number first.",
         ),
-        makeAdjustment(directIntermediate, correction, "Réinjecte l’écart d’arrondi."),
+        makeAdjustment(directIntermediate, correction, "Restore the rounding difference."),
       ],
       tags: ["round-and-correct", "round-number"],
       strategyPenalty: 0.5,
@@ -101,13 +101,13 @@ function bridgeCandidates(calculation: Calculation): readonly TrickCandidate[] {
     const lowerGap = normalizeNumber(anchor - calculation.right);
     return {
       rule: "subtraction.bridge",
-      title: `Passer par ${formatNumber(anchor)}`,
-      summary: `Mesure les deux écarts autour de ${formatNumber(anchor)}, puis additionne-les.`,
+      title: `Bridge through ${formatNumber(anchor)}`,
+      summary: `Find the two gaps around ${formatNumber(anchor)}, then add them.`,
       expression: `${formatNumber(upperGap)} + ${formatNumber(lowerGap)}`,
       steps: [
-        makeStep(calculation.left, "-", anchor, "Calcule l’écart au-dessus du repère."),
-        makeStep(anchor, "-", calculation.right, "Calcule l’écart au-dessous du repère."),
-        makeStep(upperGap, "+", lowerGap, "Additionne les deux écarts."),
+        makeStep(calculation.left, "-", anchor, "Calculate the gap above the anchor."),
+        makeStep(anchor, "-", calculation.right, "Calculate the gap below the anchor."),
+        makeStep(upperGap, "+", lowerGap, "Add the two gaps."),
       ],
       tags: ["bridge", "count-up"],
       strategyPenalty: 0.75,
@@ -131,17 +131,17 @@ function placeValueCandidate(calculation: Calculation): readonly TrickCandidate[
   const intermediate = normalizeNumber(calculation.left - highPart);
   return [{
     rule: "subtraction.place-value",
-    title: `Décomposer ${formatNumber(subtrahend)}`,
-    summary: `Sépare ${formatNumber(subtrahend)} en ${formatNumber(highPart)} et ${formatNumber(remainder)}.`,
+    title: `Decompose ${formatNumber(subtrahend)}`,
+    summary: `Split ${formatNumber(subtrahend)} into ${formatNumber(highPart)} and ${formatNumber(remainder)}.`,
     expression: `${formatNumber(intermediate)} − ${formatNumber(remainder)}`,
     steps: [
       makeStep(
         calculation.left,
         "-",
         highPart,
-        "Soustrais d’abord la partie de plus grande valeur.",
+        "Subtract the highest-place part first.",
       ),
-      makeStep(intermediate, "-", remainder, "Soustrais ensuite le reste."),
+      makeStep(intermediate, "-", remainder, "Then subtract the remainder."),
     ],
     tags: ["decomposition", "place-value"],
     strategyPenalty: 0.5,

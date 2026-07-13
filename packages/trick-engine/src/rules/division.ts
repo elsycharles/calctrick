@@ -23,16 +23,16 @@ function signCandidate(calculation: Calculation): readonly TrickCandidate[] {
   const unsignedQuotient = normalizeNumber(absoluteLeft / absoluteRight);
   const isNegative = Math.sign(calculation.left) !== Math.sign(calculation.right);
   const steps = [
-    makeStep(absoluteLeft, "/", absoluteRight, "Divise d’abord les valeurs absolues."),
+    makeStep(absoluteLeft, "/", absoluteRight, "Divide the absolute values first."),
   ];
   if (isNegative) {
-    steps.push(makeStep(0, "-", unsignedQuotient, "Applique le signe négatif au quotient."));
+    steps.push(makeStep(0, "-", unsignedQuotient, "Apply the negative sign to the quotient."));
   }
 
   return [{
     rule: "division.sign",
-    title: "Séparer le signe du calcul",
-    summary: "Détermine le signe, puis divise uniquement les valeurs absolues.",
+    title: "Handle the sign separately",
+    summary: "Determine the sign, then divide only the absolute values.",
     expression: `${isNegative ? "−" : ""}${formatNumber(absoluteLeft)} ÷ ${formatNumber(absoluteRight)}`,
     steps,
     tags: ["negative-number", "sign"],
@@ -59,17 +59,17 @@ function commonFactorCandidates(calculation: Calculation): readonly TrickCandida
     const reducedDenominator = normalizeNumber(calculation.right / factor);
     return {
       rule: "division.common-factor",
-      title: `Simplifier par ${factor}`,
-      summary: `Divise le numérateur et le dénominateur par ${factor}.`,
+      title: `Simplify by ${factor}`,
+      summary: `Divide the numerator and denominator by ${factor}.`,
       expression: `${formatNumber(reducedNumerator)} ÷ ${formatNumber(reducedDenominator)}`,
       steps: [
-        makeStep(calculation.left, "/", factor, "Réduis le numérateur."),
-        makeStep(calculation.right, "/", factor, "Réduis le dénominateur."),
+        makeStep(calculation.left, "/", factor, "Reduce the numerator."),
+        makeStep(calculation.right, "/", factor, "Reduce the denominator."),
         makeStep(
           reducedNumerator,
           "/",
           reducedDenominator,
-          "Calcule la division simplifiée.",
+          "Calculate the simplified division.",
         ),
       ],
       tags: ["simplification", "common-factor"],
@@ -102,17 +102,17 @@ function scaleCandidates(calculation: Calculation): readonly TrickCandidate[] {
 
     candidates.push({
       rule: "division.scale",
-      title: `Multiplier les deux termes par ${factor}`,
-      summary: `Change l’échelle des deux termes pour obtenir un diviseur plus simple.`,
+      title: `Multiply both terms by ${factor}`,
+      summary: `Scale both terms to obtain a simpler divisor.`,
       expression: `${formatNumber(scaledNumerator)} ÷ ${formatNumber(scaledDenominator)}`,
       steps: [
-        makeStep(calculation.left, "*", factor, "Change l’échelle du numérateur."),
-        makeStep(calculation.right, "*", factor, "Change le dénominateur avec le même facteur."),
+        makeStep(calculation.left, "*", factor, "Scale the numerator."),
+        makeStep(calculation.right, "*", factor, "Scale the denominator by the same factor."),
         makeStep(
           scaledNumerator,
           "/",
           scaledDenominator,
-          "Effectue la division avec le nouveau dénominateur.",
+          "Perform the division with the new denominator.",
         ),
       ],
       tags: ["scale", "round-number"],
@@ -141,12 +141,12 @@ function denominatorFactorCandidates(
       const intermediate = normalizeNumber(calculation.left / factor);
       return {
         rule: "division.denominator-factors",
-        title: `Diviser successivement par ${factor} et ${formatNumber(secondFactor)}`,
-        summary: `Décompose ${formatNumber(calculation.right)} en ${factor} × ${formatNumber(secondFactor)}.`,
+        title: `Divide successively by ${factor} and ${formatNumber(secondFactor)}`,
+        summary: `Factor ${formatNumber(calculation.right)} into ${factor} × ${formatNumber(secondFactor)}.`,
         expression: `${formatNumber(intermediate)} ÷ ${formatNumber(secondFactor)}`,
         steps: [
-          makeStep(calculation.left, "/", factor, "Divise par le premier facteur."),
-          makeStep(intermediate, "/", secondFactor, "Divise par le second facteur."),
+          makeStep(calculation.left, "/", factor, "Divide by the first factor."),
+          makeStep(intermediate, "/", secondFactor, "Divide by the second factor."),
         ],
         tags: ["factorization", "sequential-division"],
         strategyPenalty: 0.5,
@@ -177,18 +177,18 @@ function quotientDecompositionCandidates(
 
     candidates.push({
       rule: "division.quotient-decomposition",
-      title: `Extraire un quotient de ${chunk}`,
-      summary: `Décompose le numérateur en ${formatNumber(mainNumerator)} et ${formatNumber(remainderNumerator)}.`,
+      title: `Extract a quotient of ${chunk}`,
+      summary: `Split the numerator into ${formatNumber(mainNumerator)} and ${formatNumber(remainderNumerator)}.`,
       expression: `${chunk} + ${formatNumber(remainderQuotient)}`,
       steps: [
-        makeStep(mainNumerator, "/", calculation.right, "Divise la première partie."),
+        makeStep(mainNumerator, "/", calculation.right, "Divide the first part."),
         makeStep(
           remainderNumerator,
           "/",
           calculation.right,
-          "Divise le numérateur restant.",
+          "Divide the remaining numerator.",
         ),
-        makeStep(chunk, "+", remainderQuotient, "Additionne les deux quotients."),
+        makeStep(chunk, "+", remainderQuotient, "Add the two quotients."),
       ],
       tags: ["decomposition", "partial-quotients"],
       strategyPenalty: 0.75,
