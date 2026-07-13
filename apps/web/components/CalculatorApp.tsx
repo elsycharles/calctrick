@@ -135,7 +135,6 @@ export function CalculatorApp() {
           analysis={analysis}
           mode={mode}
           onModeChange={setMode}
-          shareExpression={analysis.expression}
         />
       ) : (
         <section className="mt-6 rounded-2xl border border-dashed border-zinc-300 bg-white/45 px-4 py-6 text-center sm:py-7">

@@ -8,10 +8,9 @@ interface TrickListProps {
   readonly analysis: TrickAnalysis;
   readonly mode: DisplayMode;
   readonly onModeChange: (mode: DisplayMode) => void;
-  readonly shareExpression: string;
 }
 
-export function TrickList({ analysis, mode, onModeChange, shareExpression }: TrickListProps) {
+export function TrickList({ analysis, mode, onModeChange }: TrickListProps) {
   return (
     <section className="mt-8 sm:mt-9" aria-labelledby="results-heading" aria-live="polite">
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -24,7 +23,7 @@ export function TrickList({ analysis, mode, onModeChange, shareExpression }: Tri
           </h2>
         </div>
         <div className="flex items-center justify-between gap-2 sm:justify-end">
-          <ShareButton expression={shareExpression} />
+          <ShareButton />
           {analysis.tricks.length > 0 ? (
             <ModeToggle mode={mode} onChange={onModeChange} />
           ) : null}
