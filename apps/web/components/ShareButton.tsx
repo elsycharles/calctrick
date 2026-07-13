@@ -2,11 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-interface ShareButtonProps {
-  readonly expression: string;
-}
-
-export function ShareButton({ expression }: ShareButtonProps) {
+export function ShareButton() {
   const [status, setStatus] = useState<
     "idle" | "sharing" | "shared" | "copied" | "manual"
   >("idle");
@@ -36,11 +32,7 @@ export function ShareButton({ expression }: ShareButtonProps) {
 
   async function handleShare() {
     const url = window.location.href;
-    const shareData = {
-      title: `${expression} made easier with CalcTrick`,
-      text: `See simpler mental-math routes for ${expression}.`,
-      url,
-    };
+    const shareData = { url };
 
     setShareUrl(url);
     setStatus("sharing");

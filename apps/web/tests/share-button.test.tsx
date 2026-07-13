@@ -19,16 +19,13 @@ describe("ShareButton", () => {
     setNavigatorProperty("canShare", vi.fn(() => true));
     window.history.replaceState(null, "", "/?a=24&op=mul&b=25");
 
-    render(<ShareButton expression="24 × 25" />);
+    render(<ShareButton />);
     await user.click(screen.getByRole("button", { name: "Share calculation" }));
 
     await waitFor(() => expect(share).toHaveBeenCalledOnce());
-    expect(share).toHaveBeenCalledWith(
-      expect.objectContaining({
-        title: "24 × 25 made easier with CalcTrick",
-        url: "http://localhost:3000/?a=24&op=mul&b=25",
-      }),
-    );
+    expect(share).toHaveBeenCalledWith({
+      url: "http://localhost:3000/?a=24&op=mul&b=25",
+    });
     expect(screen.getByRole("button", { name: "Share calculation" })).toHaveTextContent(
       "Shared",
     );
@@ -42,7 +39,7 @@ describe("ShareButton", () => {
     setNavigatorProperty("clipboard", { writeText });
     window.history.replaceState(null, "", "/?a=38&op=add&b=27");
 
-    render(<ShareButton expression="38 + 27" />);
+    render(<ShareButton />);
     await user.click(screen.getByRole("button", { name: "Share calculation" }));
 
     await waitFor(() =>
@@ -62,7 +59,7 @@ describe("ShareButton", () => {
     });
     window.history.replaceState(null, "", "/?a=85&op=div&b=5");
 
-    render(<ShareButton expression="85 ÷ 5" />);
+    render(<ShareButton />);
     await user.click(screen.getByRole("button", { name: "Share calculation" }));
 
     expect(await screen.findByRole("dialog", { name: "Copy calculation link" })).toBeVisible();
